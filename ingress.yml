@@ -1,0 +1,43 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: nginx
+  namespace: myapp
+  annotations:
+    kubernetes.io/ingress.class: nginx
+
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:      
+          - path: /api/v1/auth
+            pathType: Prefix
+            backend:
+              service:
+                name: member
+                port: 
+                  number: 8080
+          - path: /api/v1/story
+            pathType: Prefix
+            backend:
+              service:
+                name: story
+                port: 
+                  number: 8070
+          
+          - path: /api/v1/question
+            pathType: Prefix
+            backend:
+              service:
+                name: question
+                port: 
+                  number: 8090 
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web
+                port: 
+                  number: 3000

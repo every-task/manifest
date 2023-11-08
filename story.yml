@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name:  myapp
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: story
+  namespace: myapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: story
+  template:
+    metadata:
+      labels:
+        app: story
+    spec:
+      containers:
+      - name: story
+        image: amykkk/story-back:latest
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name:  story
+  namespace: myapp
+spec:
+  selector:
+    app:  story
+  type:  NodePort
+  ports:
+  - name:  story
+    port:  8070
+    targetPort:  8080

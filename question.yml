@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name:  myapp
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: question
+  namespace: myapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: question
+  template:
+    metadata:
+      labels: 
+        app: question
+    spec:
+      containers:
+      - name: question
+        image: dnd5436/question:latest
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name:  question
+  namespace: myapp             
+spec:
+  selector:
+    app:  question
+  type:  NodePort
+  ports:
+  - name:  question
+    port:  8090
+    targetPort:  8082

@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: myapp
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mentoring
+  namespace: myapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mentoring
+  template:
+    metadata:
+      labels:
+        app: mentoring
+    spec:
+      containers:
+      - name: mentoring
+        image: energysheep/mentoring-back:latest
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mentoring
+  namespace: myapp
+spec:
+  selector:
+    app: mentoring
+  type: NodePort
+  ports:
+  - name: mentoring
+    port: 8060
+    targetPort: 8080
