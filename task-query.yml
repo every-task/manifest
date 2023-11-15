@@ -6,44 +6,36 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: member
+  name: task-query
   namespace: myapp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: member
+      app: task-query
   template:
     metadata:
       labels:
-        app: member
+        app: task-query
     spec:
       containers:
-        - name: member
-          image: testwoman/member:latest
+        - name: task-query
+          image: ktk8916/task-query:latest
           envFrom:
             - configMapRef:
-                name: common-config
-          volumeMounts:
-            - name: config
-              mountPath: "/etc/config"
-
-      volumes:
-        - name: config
-          configMap:
-            name: configtest3
+              name: common-config
 
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: member
+  name: task-query
   namespace: myapp
 spec:
   selector:
-    app: member
+    app: task-query
   type: NodePort
   ports:
-    - name: member
-      port: 8080
+    - name: task-query
+      port: 8100
       targetPort: 8080

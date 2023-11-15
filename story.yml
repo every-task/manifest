@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name:  myapp
+  name: myapp
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -19,19 +19,22 @@ spec:
         app: story
     spec:
       containers:
-      - name: story
-        image: amykkk/story-back:latest
+        - name: story
+          image: amykkk/story-back:latest
+          envFrom:
+            - configMapRef:
+                name: common-config
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name:  story
+  name: story
   namespace: myapp
 spec:
   selector:
-    app:  story
-  type:  NodePort
+    app: story
+  type: NodePort
   ports:
-  - name:  story
-    port:  8070
-    targetPort:  8080
+    - name: story
+      port: 8070
+      targetPort: 8080

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name:  myapp
+  name: myapp
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -15,24 +15,27 @@ spec:
       app: question
   template:
     metadata:
-      labels: 
+      labels:
         app: question
     spec:
       containers:
-      - name: question
-        image: dnd5436/question:latest
+        - name: question
+          image: dnd5436/question:latest
+          envFrom:
+            - configMapRef:
+                name: common-config
 
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name:  question
-  namespace: myapp             
+  name: question
+  namespace: myapp
 spec:
   selector:
-    app:  question
-  type:  NodePort
+    app: question
+  type: NodePort
   ports:
-  - name:  question
-    port:  8090
-    targetPort:  8082
+    - name: question
+      port: 8090
+      targetPort: 8082

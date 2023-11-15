@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name:  myapp
+  name: myapp
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -15,24 +15,27 @@ spec:
       app: task-management
   template:
     metadata:
-      labels: 
+      labels:
         app: task-management
     spec:
       containers:
-      - name: task-management
-        image: ktk8916/task-management:latest
+        - name: task-management
+          image: ktk8916/task-management:latest
+          envFrom:
+            - configMapRef:
+                name: common-config
 
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name:  task-management
-  namespace: myapp             
+  name: task-management
+  namespace: myapp
 spec:
   selector:
-    app:  task-management
-  type:  NodePort
+    app: task-management
+  type: NodePort
   ports:
-  - name:  task-management
-    port:  8050
-    targetPort:  8080
+    - name: task-management
+      port: 8050
+      targetPort: 8080
