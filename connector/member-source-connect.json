@@ -1,0 +1,21 @@
+{
+  "name": "member-source-connect",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "tasks.max": "1",
+    "connection.url": "jdbc:mysql://${DATABASE_URL}:${DATABASE_PORT}/member",
+    "connection.user": ${DATABASE_USERNAME},
+    "connection.password": ${DATABASE_PASSWORD},
+    "topic.prefix": "connect.",
+    "topic.creation.default.replication.factor": 1,
+    "topic.creation.default.partitions": 3,
+    "catalog.pattern": "member", 
+    "table.whitelist": "member.member",
+    "mode": "timestamp",
+    "timestamp.column.name": "modified_at",
+     "transforms": "removeField",
+    "transforms.removeField.type": "org.apache.kafka.connect.transforms.ReplaceField$Value",
+    "transforms.removeField.blacklist": "email, password",
+    "poll.interval.ms": 500
+  }
+}
